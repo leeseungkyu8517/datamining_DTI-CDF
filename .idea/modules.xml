@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/datamining_DTI-CDF.iml" filepath="$PROJECT_DIR$/.idea/datamining_DTI-CDF.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/DTI-CDF.iml" filepath="$PROJECT_DIR$/.idea/DTI-CDF.iml" />
     </modules>
   </component>
 </project>

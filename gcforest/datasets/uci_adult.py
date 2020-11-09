@@ -23,7 +23,7 @@ class FeatureParser(object):
             f_names = [d.strip() for d in desc.split(",")]
             # missing value
             f_names.insert(0, "?")
-            self.name2id = dict(list(zip(f_names, list(range(len(f_names))))))
+            self.name2id = dict(zip(f_names, range(len(f_names))))
 
     def get_float(self, f_data):
         f_data = f_data.strip()

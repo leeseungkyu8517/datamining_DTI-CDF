@@ -52,8 +52,8 @@ R_all_train_test = "ic_admat_dgc_mat_2_line.txt"
 (D,T,DT_signature,aAllPossiblePairs,dDs,dTs,diDs,diTs) = get_All_D_T_thier_Labels_Signatures(R_all_train_test)
 
 DT_feature_pair_list = []
-for index in list(diDs.values()):
-    for column in list(diTs.values()):
+for index in diDs.values():
+    for column in diTs.values():
         DT_feature_pair_list.append([index,column]) 
 #-------------------------
 
@@ -86,8 +86,8 @@ def calc_metrics(y_results,DT_feature_pair_list,IC_ddr_new_pair):
         micro_recall = mean_tp/ (mean_tp + mean_fn)
         micro_fscore = 2 * micro_precision * micro_recall / (micro_precision + micro_recall)
         
-        print(('mean_fp = {}, mean_fn = {}, mean_tp = {}, mean_tn = {}'.format(mean_fp, mean_fn, mean_tp, mean_tn)))
-        print(('micro_precision = {}, micro_recall = {}, micro_fscore = {}'.format(micro_precision, micro_recall, micro_fscore)))
+        print('mean_fp = {}, mean_fn = {}, mean_tp = {}, mean_tn = {}'.format(mean_fp, mean_fn, mean_tp, mean_tn))
+        print('micro_precision = {}, micro_recall = {}, micro_fscore = {}'.format(micro_precision, micro_recall, micro_fscore))
         
     y_choose_all.drop_duplicates(subset='test_idx_fold', keep='first', inplace=True) # (16, 5)
     y_choose_all['test_idx_fold'] = y_choose_all['test_idx_fold'].astype('int')
@@ -99,8 +99,8 @@ def calc_metrics(y_results,DT_feature_pair_list,IC_ddr_new_pair):
     DTI_CDF_new_pair = [item[0] + ',' + item[1] for item in DTI_CDF_new_pair]
     
     ddr_intersection_dti = list(set(DTI_CDF_new_pair).intersection(set(IC_ddr_new_pair)))
-    print(('DTI_CDF_new_pair: ', DTI_CDF_new_pair))
-    print(('ddr_intersection_dti = ', ddr_intersection_dti))
+    print('DTI_CDF_new_pair: ', DTI_CDF_new_pair)
+    print('ddr_intersection_dti = ', ddr_intersection_dti)
     
     return DTI_CDF_new_pair, y_choose_all, ddr_intersection_dti
 
@@ -286,14 +286,14 @@ def run_classification(mode, seed, X_train_10_fold, X_test_10_fold, y_train_10_f
                                                                         layer)
         
     print('************results : one_mode + one_seed + one_layer + one_parameter************')  
-    print(('Avg_AUPR_training = {:.4},Avg_AUPR_testing = {:.4},Avg_AUC_training = {:.4},Avg_AUC_testing = {:.4}'.format(
-            result[0],result[1],result[3],result[4])))
-    print(('folds_AUPR_testing:', result[2]))
-    print(('folds_AUPR_training:', result[6]))
-    print(('folds_AUC_testing:', result[5]))
-    print(('folds_AUC_training:',result[7]))
-    print(('precision_testing = {}, recall_testing = {}, fscore_testing = {}'.format(result[8][0], result[8][1], result[8][2])))
-    print(('precision_training = {}, recall_training = {}, fscore_training = {}'.format(result[9][0], result[9][1], result[9][2])))
+    print('Avg_AUPR_training = {:.4},Avg_AUPR_testing = {:.4},Avg_AUC_training = {:.4},Avg_AUC_testing = {:.4}'.format(
+            result[0],result[1],result[3],result[4]))
+    print('folds_AUPR_testing:', result[2])
+    print('folds_AUPR_training:', result[6])
+    print('folds_AUC_testing:', result[5])
+    print('folds_AUC_training:',result[7])
+    print('precision_testing = {}, recall_testing = {}, fscore_testing = {}'.format(result[8][0], result[8][1], result[8][2]))
+    print('precision_training = {}, recall_training = {}, fscore_training = {}'.format(result[9][0], result[9][1], result[9][2]))
     print('************************************')  
     return result, test_true_predict_compare
 
@@ -314,7 +314,7 @@ def gain_results(seeds, mode_list, layer, only_PathCS_feature = False):
         seeds_results = []
         test_true_predict_compare_10cv_seeds = []
         for seed in seeds:
-            print(("---------GENERATE_FOLD_{}_{}-----------------------------------------------".format(mode, seed)))
+            print ("---------GENERATE_FOLD_{}_{}-----------------------------------------------".format(mode, seed))
 
             filename = r'E:\11_MFDF_code\3_my_code\9_major_revised\IC\data\IC_folddata_X-Y_S' + str(mode) + '_seed' + str(seed) + '.npz'
             folddata_XY = np.load(filename)
@@ -325,11 +325,11 @@ def gain_results(seeds, mode_list, layer, only_PathCS_feature = False):
             
             if only_PathCS_feature == True:
                 if mode == 'p':
-                    X_train_10_fold = [x[:,:12] for x in X_train_10_fold]
-                    X_test_10_fold = [x[:,:12] for x in X_test_10_fold]
+                    X_train_10_fold = map(lambda x : x[:,:12], X_train_10_fold)
+                    X_test_10_fold = map(lambda x : x[:,:12], X_test_10_fold)
                 else:
-                    X_train_10_fold = [x[:,:10] for x in X_train_10_fold]
-                    X_test_10_fold = [x[:,:10] for x in X_test_10_fold]
+                    X_train_10_fold = map(lambda x : x[:,:10], X_train_10_fold)
+                    X_test_10_fold = map(lambda x : x[:,:10], X_test_10_fold)
                 
             print ('-------------------------------------------------THIS SEED FINISHED----------------------------------')
 
@@ -351,22 +351,22 @@ def gain_results(seeds, mode_list, layer, only_PathCS_feature = False):
             recall_50, recall_100 = np.mean(trails_recall_50), np.mean(trails_recall_100)
             
             print( "################Results###################" )
-            print(('model_architecture:',layer))
-            print(( "Mode: %s" % mode ))
-            print(( "Average: AUPR: %s" % aupr )) 
-            print(( "Average: AUC: %s" % roc_auc ))
-            print(( "Average: precision = {}, recall = {}, fscore = {} ".format(precision, recall, fscore)))
+            print('model_architecture:',layer)
+            print( "Mode: %s" % mode )
+            print( "Average: AUPR: %s" % aupr ) 
+            print( "Average: AUC: %s" % roc_auc )
+            print( "Average: precision = {}, recall = {}, fscore = {} ".format(precision, recall, fscore))
             
         for result_ in seeds_results:
             print('seed_results: ')
-            print(('Avg_AUPR_training:',result_[0]))
-            print(('Avg_AUPR:',result_[1]))
-            print(('folds_AUPR:',result_[2]))
-            print(('Avg_AUC_training:',result_[3]))
-            print(('Avg_AUC:',result_[4]))
-            print(('folds_AUC:',result_[5]))
-            print(('precision_testing = {}, recall_testing = {}, fscore_testing = {}'.format(result_[8][0], result_[8][1], result_[8][2])))
-            print(('precision_training = {}, recall_training = {}, fscore_training = {}'.format(result_[9][0],result_[9][1], result_[9][2])))
+            print('Avg_AUPR_training:',result_[0])
+            print('Avg_AUPR:',result_[1])
+            print('folds_AUPR:',result_[2])
+            print('Avg_AUC_training:',result_[3])
+            print('Avg_AUC:',result_[4])
+            print('folds_AUC:',result_[5])
+            print('precision_testing = {}, recall_testing = {}, fscore_testing = {}'.format(result_[8][0], result_[8][1], result_[8][2]))
+            print('precision_training = {}, recall_training = {}, fscore_training = {}'.format(result_[9][0],result_[9][1], result_[9][2]))
             print('')
             print( "###########################################")
             
@@ -380,12 +380,12 @@ def gain_results(seeds, mode_list, layer, only_PathCS_feature = False):
         recall_100_list.append(recall_100)
         test_true_predict_compare_10cv_seeds_modes.append(test_true_predict_compare_10cv_seeds)
         print( "################Results###################" )
-        print(('model_architecture:',layer))
-        print(( "Mode: %s" % mode_list ))
-        print(( "Average AUPR: %s" % aupr_list )) 
-        print(( "Average AUC: %s" % auc_list ))
-        print(( "Average precision = {}, recall = {}, fscore = {} ".format(precision_list,recall_list,fscore_list)))
-        print(( "Average recall_50 = {}, recall_25 = {} ".format(recall_50_list, recall_100_list)))
+        print('model_architecture:',layer)
+        print( "Mode: %s" % mode_list )
+        print( "Average AUPR: %s" % aupr_list ) 
+        print( "Average AUC: %s" % auc_list )
+        print( "Average precision = {}, recall = {}, fscore = {} ".format(precision_list,recall_list,fscore_list))
+        print( "Average recall_50 = {}, recall_25 = {} ".format(recall_50_list, recall_100_list))
         print( "###########################################")
     
     return test_true_predict_compare_10cv_seeds_modes
@@ -460,7 +460,7 @@ seeds = [1231, 8367, 22, 1812, 4659]
 model_architecture = ['rf1xgb1']
 
 for layer in model_architecture:
-    print(('model_architecture:',layer))
+    print('model_architecture:',layer)
     rf1_PathCS_test_true_predict_compare_10cv_seeds_modes = gain_results(seeds,mode_list,layer, only_PathCS_feature = True)
 DTI_CDF_new_pair, y_choose_all, ddr_intersection_dti = calc_metrics(rf1_PathCS_test_true_predict_compare_10cv_seeds_modes,DT_feature_pair_list,IC_ddr_new_pair)
 
@@ -469,7 +469,7 @@ seeds = [1231, 8367, 22, 1812, 4659]
 model_architecture = ['rf1xgb1_2']
 
 for layer in model_architecture:
-    print(('model_architecture:',layer))
+    print('model_architecture:',layer)
     rf1_PathCS_test_true_predict_compare_10cv_seeds_modes = gain_results(seeds,mode_list,layer, only_PathCS_feature = True)
 DTI_CDF_new_pair, y_choose_all, ddr_intersection_dti = calc_metrics(rf1_PathCS_test_true_predict_compare_10cv_seeds_modes,DT_feature_pair_list,IC_ddr_new_pair)
 
@@ -481,7 +481,7 @@ seeds = [1231, 8367, 22, 1812, 4659]
 model_architecture = ['rf1']
 
 for layer in model_architecture:
-    print(('model_architecture:',layer))
+    print('model_architecture:',layer)
     rf1_PathCS_test_true_predict_compare_10cv_seeds_modes = gain_results(seeds,mode_list,layer, only_PathCS_feature = True)
 DTI_CDF_new_pair, y_choose_all, ddr_intersection_dti = calc_metrics(rf1_PathCS_test_true_predict_compare_10cv_seeds_modes,DT_feature_pair_list,IC_ddr_new_pair)
 
@@ -490,7 +490,7 @@ seeds = [1231, 8367, 22, 1812, 4659]
 model_architecture = ['xgb1']
 
 for layer in model_architecture:
-    print(('model_architecture:',layer))
+    print('model_architecture:',layer)
     rf1_PathCS_test_true_predict_compare_10cv_seeds_modes = gain_results(seeds,mode_list,layer, only_PathCS_feature = True)
 DTI_CDF_new_pair, y_choose_all, ddr_intersection_dti = calc_metrics(rf1_PathCS_test_true_predict_compare_10cv_seeds_modes,DT_feature_pair_list,IC_ddr_new_pair)
 
@@ -501,7 +501,7 @@ seeds = [1231, 8367, 22, 1812, 4659]
 model_architecture = ['rf2xgb2']
 
 for layer in model_architecture:
-    print(('model_architecture:',layer))
+    print('model_architecture:',layer)
     rf1_PathCS_test_true_predict_compare_10cv_seeds_modes = gain_results(seeds,mode_list,layer, only_PathCS_feature = True)
 DTI_CDF_new_pair, y_choose_all, ddr_intersection_dti = calc_metrics(rf1_PathCS_test_true_predict_compare_10cv_seeds_modes,DT_feature_pair_list,IC_ddr_new_pair)
 
@@ -513,7 +513,7 @@ seeds = [1231, 8367, 22, 1812, 4659]
 model_architecture = ['xgb2']
 
 for layer in model_architecture:
-    print(('model_architecture:',layer))
+    print('model_architecture:',layer)
     rf1_PathCS_test_true_predict_compare_10cv_seeds_modes = gain_results(seeds,mode_list,layer, only_PathCS_feature = True)
 DTI_CDF_new_pair, y_choose_all, ddr_intersection_dti = calc_metrics(rf1_PathCS_test_true_predict_compare_10cv_seeds_modes,DT_feature_pair_list,IC_ddr_new_pair)
 
@@ -522,7 +522,7 @@ seeds = [1231, 8367, 22, 1812, 4659]
 model_architecture = ['rf2']
 
 for layer in model_architecture:
-    print(('model_architecture:',layer))
+    print('model_architecture:',layer)
     rf1_PathCS_test_true_predict_compare_10cv_seeds_modes = gain_results(seeds,mode_list,layer, only_PathCS_feature = True)
 DTI_CDF_new_pair, y_choose_all, ddr_intersection_dti = calc_metrics(rf1_PathCS_test_true_predict_compare_10cv_seeds_modes,DT_feature_pair_list,IC_ddr_new_pair)
 
@@ -533,7 +533,7 @@ seeds = [1231, 8367, 22, 1812, 4659]
 model_architecture = ['rf2xgb1']
 
 for layer in model_architecture:
-    print(('model_architecture:',layer))
+    print('model_architecture:',layer)
     rf1_PathCS_test_true_predict_compare_10cv_seeds_modes = gain_results(seeds,mode_list,layer, only_PathCS_feature = True)
 DTI_CDF_new_pair, y_choose_all, ddr_intersection_dti = calc_metrics(rf1_PathCS_test_true_predict_compare_10cv_seeds_modes,DT_feature_pair_list,IC_ddr_new_pair)
 
@@ -542,6 +542,6 @@ seeds = [1231, 8367, 22, 1812, 4659]
 model_architecture = ['rf1xgb2']
 
 for layer in model_architecture:
-    print(('model_architecture:',layer))
+    print('model_architecture:',layer)
     rf1_PathCS_test_true_predict_compare_10cv_seeds_modes = gain_results(seeds,mode_list,layer, only_PathCS_feature = True)
 DTI_CDF_new_pair, y_choose_all, ddr_intersection_dti = calc_metrics(rf1_PathCS_test_true_predict_compare_10cv_seeds_modes,DT_feature_pair_list,IC_ddr_new_pair)

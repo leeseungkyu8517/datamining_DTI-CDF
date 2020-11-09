@@ -75,14 +75,14 @@ class KFoldWrapper(object):
         # K-Fold split
         n_stratify = X.shape[0]
         if self.n_folds == 1:
-            cv = [(list(range(len(X))), list(range(len(X))))]
+            cv = [(range(len(X)), range(len(X)))]
         else:
             if y_stratify is None:
                 skf = KFold(n_splits=self.n_folds, shuffle=True, random_state=self.random_state)
                 cv = [(t, v) for (t, v) in skf.split(len(n_stratify))]
             else:
                 skf = StratifiedKFold(n_splits=self.n_folds, shuffle=True, random_state=self.random_state)
-                cv = [(t, v) for (t, v) in skf.split(list(range(n_stratify)), y_stratify)]
+                cv = [(t, v) for (t, v) in skf.split(range(n_stratify), y_stratify)]
         # Fit
         y_probas = []
         n_dims = X.shape[-1]

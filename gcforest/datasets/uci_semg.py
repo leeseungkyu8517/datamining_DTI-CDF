@@ -54,7 +54,7 @@ def load_data():
             X = np.vstack((X, X_cur))
             y = np.concatenate((y, y_cur))
     n_datas = X.shape[0]
-    train_idx, test_idx = train_test_split(list(range(n_datas)), random_state=0,
+    train_idx, test_idx = train_test_split(range(n_datas), random_state=0,
             train_size=0.7, stratify=y)
     return (X[train_idx], y[train_idx]), (X[test_idx], y[test_idx])
 

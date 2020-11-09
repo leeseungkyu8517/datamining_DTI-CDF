@@ -14,7 +14,7 @@ def get_edge_list(sName):
 
 def get_adj_matrix_from_relation(aRelation,dDs,dTs):
 	#print 'aRelation',aRelation
-	adj = np.zeros((len(list(dDs.keys())),len(list(dTs.keys()))))
+	adj = np.zeros((len(dDs.keys()),len(dTs.keys())))
 	for element in aRelation:
 		i = dDs[element[0]]
 		j = dTs[element[1]]
@@ -22,7 +22,7 @@ def get_adj_matrix_from_relation(aRelation,dDs,dTs):
 	return adj
 
 def make_sim_matrix(edge_list,dMap):
-	sim = np.zeros((len(list(dMap.keys())),len(list(dMap.keys()))))
+	sim = np.zeros((len(dMap.keys()),len(dMap.keys())))
 	for a,b,c in edge_list:
 		if float(c) > 0.0:	
 			i = dMap[a]

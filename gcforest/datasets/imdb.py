@@ -29,7 +29,7 @@ class IMDB(ds_base):
             (X_train, y_train), (X_test, y_test) = imdb.load_data(nb_words=None, 
                     skip_top=0, maxlen=None, seed=113, start_char=1, oov_char=2, index_from=3)
         X, y = self.get_data_by_imageset(X_train, y_train, X_test, y_test)
-        print(('data_set={}, Average sequence length: {}'.format(self.data_set, np.mean(list(map(len, X))))))
+        print('data_set={}, Average sequence length: {}'.format(self.data_set, np.mean(list(map(len, X)))))
 
         #feature
         if feature == 'origin':

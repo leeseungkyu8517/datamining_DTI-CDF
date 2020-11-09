@@ -50,7 +50,7 @@ def gain_results(seeds, mode_list, layer, only_PathCS_feature = False):
         seeds_results = []
         test_true_predict_compare_10cv_seeds = []
         for seed in seeds:
-            print(("---------GENERATE_FOLD_{}-----------------------------------------------".format(seed)))
+            print ("---------GENERATE_FOLD_{}-----------------------------------------------".format(seed))
 
             filename = r'E:\11_MFDF_code\3_my_code\9_major_revised\NR\data\RFE100_NR_folddata_X-Y_S' + str(mode) + '_seed' + str(seed) + '.npz'
             folddata_XY = np.load(filename)
@@ -61,11 +61,11 @@ def gain_results(seeds, mode_list, layer, only_PathCS_feature = False):
             
             if only_PathCS_feature == True:
                 if mode == 'p':
-                    X_train_10_fold = [x[:,:12] for x in X_train_10_fold]
-                    X_test_10_fold = [x[:,:12] for x in X_test_10_fold]
+                    X_train_10_fold = map(lambda x : x[:,:12], X_train_10_fold)
+                    X_test_10_fold = map(lambda x : x[:,:12], X_test_10_fold)
                 else:
-                    X_train_10_fold = [x[:,:10] for x in X_train_10_fold]
-                    X_test_10_fold = [x[:,:10] for x in X_test_10_fold]
+                    X_train_10_fold = map(lambda x : x[:,:10], X_train_10_fold)
+                    X_test_10_fold = map(lambda x : x[:,:10], X_test_10_fold)
                 
             print ('-------------------------------------------------THIS SEED FINISHED----------------------------------')
 
@@ -79,19 +79,19 @@ def gain_results(seeds, mode_list, layer, only_PathCS_feature = False):
             roc_auc,c1 = mean_confidence_interval(trails_AUCs)
             
             print( "################Results###################" )
-            print(('model_architecture:',layer))
-            print(( "Mode: %s" % mode ))
-            print(( "Average: AUPR: %s" % aupr )) 
-            print(( "Average: AUC: %s" % roc_auc ))
+            print('model_architecture:',layer)
+            print( "Mode: %s" % mode )
+            print( "Average: AUPR: %s" % aupr ) 
+            print( "Average: AUC: %s" % roc_auc )
             
         for result_ in seeds_results:
             print('seed_results: ')
-            print(('Avg_AUPR_training:',result_[0]))
-            print(('Avg_AUPR:',result_[1]))
-            print(('folds_AUPR:',result_[2]))
-            print(('Avg_AUC_training:',result_[3]))
-            print(('Avg_AUC:',result_[4]))
-            print(('folds_AUC:',result_[5]))
+            print('Avg_AUPR_training:',result_[0])
+            print('Avg_AUPR:',result_[1])
+            print('folds_AUPR:',result_[2])
+            print('Avg_AUC_training:',result_[3])
+            print('Avg_AUC:',result_[4])
+            print('folds_AUC:',result_[5])
             print('')
             print( "###########################################")
             
@@ -100,10 +100,10 @@ def gain_results(seeds, mode_list, layer, only_PathCS_feature = False):
         auc_list.append(roc_auc)
         test_true_predict_compare_10cv_seeds_modes.append(test_true_predict_compare_10cv_seeds)
         print( "################Results###################" )
-        print(('model_architecture:',layer))
-        print(( "Mode: %s" % mode_list ))
-        print(( "Average AUPR: %s" % aupr_list )) 
-        print(( "Average AUC: %s" % auc_list ))
+        print('model_architecture:',layer)
+        print( "Mode: %s" % mode_list )
+        print( "Average AUPR: %s" % aupr_list ) 
+        print( "Average AUC: %s" % auc_list )
         print( "###########################################")
     
     return aupr_list,auc_list,test_true_predict_compare_10cv_seeds_modes
@@ -165,24 +165,24 @@ def run_classification(X_train_10_fold, X_test_10_fold, y_train_10_fold, y_test_
             
     parameter_result_df = pd.DataFrame(parameter_list)
     parameter_result_df.columns = ['parameter','train_AUPR','Avg_AUPR']   
-    print((parameter_result_df.sort_values(by='Avg_AUPR', axis=0)))
+    print(parameter_result_df.sort_values(by='Avg_AUPR', axis=0))
     
     best_parameter_idx = parameter_result_df['Avg_AUPR'].idxmax()
     best_parameter_result = parameter_result_df.iloc[best_parameter_idx,:]
     
-    print(('best_parameter_idx : ',best_parameter_idx))
-    print(('best_parameter_result : ',best_parameter_result))
+    print('best_parameter_idx : ',best_parameter_idx)
+    print('best_parameter_result : ',best_parameter_result)
         
     result.sort(key=lambda x:(x[0],x[1]),reverse=True)
     
-    print((result[0]))
+    print(result[0])
 #     print('****mode = {}****'.format(mode))
-    print(('Avg_AUPR_training = {:.4},Avg_AUPR_testing = {:.4},Avg_AUC_training = {:.4},Avg_AUC_testing = {:.4}'.format(
-            result[0][0],result[0][1],result[0][3],result[0][4])))
-    print(('folds_AUPR_testing:', result[0][2]))
-    print(('folds_AUPR_training:', result[0][6]))
-    print(('folds_AUC_testing:', result[0][5]))
-    print(('folds_AUC_training:',result[0][7]))
+    print('Avg_AUPR_training = {:.4},Avg_AUPR_testing = {:.4},Avg_AUC_training = {:.4},Avg_AUC_testing = {:.4}'.format(
+            result[0][0],result[0][1],result[0][3],result[0][4]))
+    print('folds_AUPR_testing:', result[0][2])
+    print('folds_AUPR_training:', result[0][6])
+    print('folds_AUC_testing:', result[0][5])
+    print('folds_AUC_training:',result[0][7])
     print('************results************')  
     
     return result[0], parameter_result_df, test_true_predict_compare_10cv[best_parameter_idx]
@@ -249,6 +249,6 @@ seeds = [1231, 8367, 22, 1812, 4659]
 model_architecture = ['xgb1']
 
 for layer in model_architecture:
-    print(('model_architecture:',layer))
+    print('model_architecture:',layer)
     aupr_list,auc_list,rf1_PathCS_test_true_predict_compare_10cv_seeds_modes = gain_results(seeds,mode_list,layer, only_PathCS_feature = True)
 

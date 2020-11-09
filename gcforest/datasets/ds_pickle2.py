@@ -6,7 +6,7 @@ Requirements: This package is developed with Python 2.7, please make sure all th
 ATTN: This package is free for academic usage. You can run it at your own risk. For other purposes, please contact Prof. Zhi-Hua Zhou(zhouzh@lamda.nju.edu.cn)
 ATTN2: This package was developed by Mr.Ji Feng(fengj@lamda.nju.edu.cn). The readme file and demo roughly explains how to use the codes. For any problem concerning the codes, please feel free to contact Mr.Feng. 
 """
-
+from __future__ import print_function
 import pickle
 import os, os.path as osp
 
